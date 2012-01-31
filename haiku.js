@@ -221,8 +221,11 @@
         return haiku(2 + rnd(4), 2 + rnd(4) + rnd(3), 2 + rnd(4), srq = false);
     }
 
-    exports.modern = modern;
-    exports.trad   = trad;
+    // Export in node land.
+    if (exports !== 'undefined') {
+        exports.modern = modern;
+        exports.trad   = trad;
+    } 
 
     return { modern: modern, trad: trad };
 })();
