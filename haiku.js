@@ -24,7 +24,11 @@
 (function () {
     var w, s, srq, std, vatd, ptd, vpl, uidx, used = [];
 
-    // The haiku dictionary.
+    /*** The haiku dictionary. ***
+     * 
+     * TODO: figure out how to keep these in seperate files for the 
+     * browser.
+     */
     var verb = ["abandons", 3, "aborts", 3, "abuses", 3, "accepts", 2, "accompanies", 4, "accompanied", 4, "accuses", 3, "admires", 2, "admits", 2, "admonishes", 4, "ages", 1, "agrees", 2, "awakens", 3, "awoke", 2, "allows", 2, "announces", 3, "annoys", 2, "asks", 1, "asked", 1, "assists", 2, "assures", 2, "attacks", 2, "balances", 3, "bans", 1, "beats", 1, "beat", 1, "becomes", 2, "became", 2, "beckons", 2, "beckoned", 2, "begs", 1, "begged", 1, "berates", 2, "berated", 3, "bites", 1, "bit", 1, "blooms", 1, "bloomed", 1, "blames", 1, "blamed", 1, "blows", 1, "blew", 1, "blushes", 2, "blushed", 1, "boils", 1, "boiled", 1, "bores", 1, "born", 1, "borrows", 2, "brings", 1, "brought", 1, "brushes", 2, "brushed", 2, "breaks", 1, "broke", 1, "brews", 1, "brewed", 1, "burns", 1, "buries", 2, "buys", 1, "calls", 1, "called", 1, "cancels", 2, "carresses", 3, "carressed", 2, "carries", 2, "carried", 2, "carves", 1, "castigates", 3, "catches", 1, "cought", 1, "censures", 2, "changes", 2, "chants", 1, "chanted", 2, "charms", 1, "chases", 2, "chased", 1, "chastises", 3, "cheats", 1, "chews", 1, "claps", 1, "clapped", 2, "cleans", 1, "climbs", 1, "climbed", 2, "clings", 1, "clung", 1, "collapses", 3, "comes", 1, "came", 1, "comforts", 2, "commands", 2, "commanded", 3, "commends", 2, "compliments", 3, "complimented", 4, "concurs", 2, "concurred", 2, "considers", 3, "constructs", 2, "consumes", 2, "contacts", 2, "contacted", 3, "continues", 3, "contracts", 2, "cooks", 1, "corrects", 2, "covers", 2, "covered", 2, "cracks", 1, "craves", 1, "craved", 1, "crawls", 1, "crawled", 1, "creases", 2, "cremates", 2, "cripples", 2, "croaks", 1, "croaked", 1, "crushes", 2, "cries", 1, "cried", 1, "curses", 2, "cursed", 2, "cuts", 1, "damages", 3, "dances", 2, "danced", 1, "dares", 1, "dared", 1, "dazzles", 2, "deafens", 2, "declines", 2, "declined", 2, "decreases", 3, "decreased", 2, "denies", 2, "derides", 2, "desires", 2, "destroys", 2, "detaches", 3, "detects", 2, "dies", 1, "died", 1, "digs", 1, "dug", 1, "disables", 3, "disagrees", 3, "disagreed", 3, "disbelieves", 3, "dismisses", 3, "disregards", 3, "dissolves", 2, "dissents", 2, "dissented", 3, "disturbs", 2, "distorts", 2, "dotes", 1, "doted", 2, "dozes", 2, "dozed", 2, "drains", 1, "drained", 2, "dreams", 1, "dreamt", 1, "drenches", 2, "drinks", 1, "drank", 1, "draws", 1, "drew", 1, "drops", 1, "eats", 1, "ate", 1, "embraces", 3, "embraced", 2, "emerges", 2, "enchants", 2, "encourages", 4, "enlightens", 3, "erases", 3, "erased", 2, "enters", 2, "entered", 1, "etches", 2, "etched", 1, "examines", 3, "examined", 3, "executes", 3, "expands", 2, "explodes", 2, "extinguishes", 4, "fades", 1, "favours", 2, "feeds", 1, "falls", 1, "fell", 1, "feels", 1, "fetches", 2, "fetched", 1, "fights", 1, "fought", 1, "fits", 1, "fitted", 2, "finds", 1, "flakes", 1, "flaked", 1, "flickers", 2, "flickered", 2, "flinches", 2, "flinched", 1, "flirts", 1, "flirted", 2, "floods", 1, "flooded", 2, "flourishes", 3, "flourished", 2, "flies", 1, "flew", 1, "follows", 2, "followed", 2, "forbids", 2, "forbade", 2, "forges", 2, "forgives", 2, "forgave", 2, "frowns", 1, "frowned", 1, "fumes", 1, "fumed", 1, "fusses", 2, "fussed", 1, "gapes", 1, "gaped", 1, "gathers", 2, "gazes", 2, "gazed", 1, "glances", 2, "glanced", 1, "glares", 1, "glared", 1, "gleams", 1, "gleamed", 1, "glimpses", 2, "glimpsed", 2, "gloats", 1, "gloated", 2, "glows", 1, "goes", 1, "went", 1, "grasps", 1, "grasped", 1, "grimaces", 3, "grimaced", 2, "gropes", 1, "groped", 1, "grows", 1, "grew", 1, "grumbles", 2, "grumbled", 2, "hangs", 1, "hears", 1, "heard", 1, "heeds", 1, "heeded", 2, "helps", 1, "helped", 1, "hides", 1, "hid", 1, "hits", 1, "hit", 1, "heals", 2, "holds", 1, "held", 1, "hurries", 2, "identifies", 4, "ignites", 2, "ignited", 3, "ignores", 2, "imitates", 3, "increases", 3, "increased", 2, "inserts", 2, "inserted", 3, "insists", 2, "insisted", 3, "inspects", 2, "insults", 2, "interests", 3, "interrupts", 3, "invents", 2, "invented", 3, "inverts", 2, "inverted", 3, "irritates", 3, "irritated", 4, "jeers", 1, "jeered", 1, "juggles", 2, "juggled", 2, "jumps", 1, "jumped", 1, "keeps", 1, "kills", 1, "killed", 1, "kneels", 1, "knelt", 1, "laments", 1, "laughs", 1, "laughed", 1, "leans", 1, "leant", 1, "learns", 1, "learnt", 1, "licks", 1, "licked", 2, "lifts", 1, "lifted", 2, "lines", 1, "lined", 1, "listens", 2, "listened", 2, "loathes", 1, "loans", 1, "locates", 2, "looks", 1, "looked", 1, "loses", 2, "lowers", 2, "lowered", 2, "marches", 2, "marched", 1, "marks", 1, "measures", 2, "meditates", 3, "meditated", 4, "melts", 1, "mocks", 1, "mourns", 1, "moves", 1, "nags", 1, "nagged", 1, "occupies", 3, "offends", 2, "orders", 2, "panics", 2, "parts", 1, "patronises", 4, "patronised", 3, "pauses", 2, "pecks", 1, "pecked", 1, "peeks", 1, "peeked", 1, "peers", 1, "peered", 1, "permits", 2, "perspires", 2, "perspired", 2, "pesters", 2, "picks", 1, "picked", 1, "pinches", 2, "pinched", 1, "pleases", 2, "plays", 1, "played", 1, "points", 1, "pokes", 1, "poked", 1, "ponders", 2, "pondered", 2, "poses", 2, "pounces", 2, "pounced", 1, "pours", 1, "poured", 1, "praises", 2, "prays", 1, "prayed", 1, "presses", 2, "pressed", 1, "pretends", 2, "proclaims", 2, "prods", 2, "profits", 2, "profited", 3, "protects", 2, "pulls", 1, "pulled", 1, "punches", 2, "pursues", 2, "pushes", 2, "pushed", 1, "quits", 1, "quit", 1, "quotes", 1, "raises", 2, "rattles", 2, "reads", 1, "read", 1, "reassures", 3, "rebukes", 2, "recalls", 2, "recants", 2, "recanted", 3, "recognises", 4, "recoils", 2, "recoiled", 2, "recommends", 3, "recovers", 3, "refreshes", 3, "refuses", 3, "rejects", 2, "relaxes", 3, "remembers", 3, "reminds", 2, "removes", 2, "removed", 2, "renounces", 3, "renounced", 2, "repairs", 2, "replaces", 3, "replies", 2, "replied", 2, "reports", 2, "reprimands", 3, "reproaches", 3, "rescues", 2, "reserves", 2, "resigns", 2, "rests", 1, "retaliates", 4, "retaliated", 5, "retches", 2, "retched", 1, "retreats", 2, "retreated", 3, "returns", 2, "returned", 2, "reveres", 2, "revolts", 2, "rolls", 1, "rolled", 1, "rises", 2, "rose", 1, "rubs", 1, "rubbed", 1, "runs", 1, "ran", 1, "rushes", 2, "sacrifices", 4, "sags", 1, "sagged", 1, "saves", 1, "scolds", 1, "scolded", 2, "scores", 1, "scored", 1, "screams", 1, "screamed", 1, "searches", 2, "searched", 2, "sees", 1, "saw", 1, "seethes", 1, "seethed", 1, "sells", 1, "senses", 2, "sensed", 1, "sets", 1, "shakes", 1, "shaked", 1, "shares", 1, "shelters", 2, "shines", 1, "shone", 1, "shudders", 2, "shuddered", 2, "shuffles", 2, "shuffled", 2, "shuns", 1, "shuts", 1, "sips", 1, "sipped", 1, "sits", 1, "sat", 1, "slaps", 1, "slices", 2, "slides", 1, "slid", 1, "slips", 1, "smells", 1, "smelled", 1, "snaps", 1, "snarls", 1, "snarled", 1, "sneers", 1, "sneered", 1, "sniffs", 1, "sniffed", 1, "snoozes", 2, "snoozed", 1, "snores", 1, "snored", 1, "snubs", 1, "soaks", 1, "sobs", 1, "sobbed", 1, "soothes", 1, "speaks", 1, "spoke", 1, "spins", 1, "span", 1, "spits", 1, "spat", 1, "splashes", 2, "squeezes", 2, "stabs", 1, "staggers", 2, "stains", 1, "stamps", 1, "stamped", 1, "stares", 1, "stared", 1, "starts", 1, "started", 2, "starves", 1, "steals", 1, "stimulates", 3, "stirs", 1, "stops", 1, "stretches", 2, "strikes", 1, "strips", 1, "strokes", 1, "studies", 2, "stumbles", 2, "stumbled", 2, "subdues", 2, "submits", 2, "submitted", 3, "suffers", 2, "suffered", 2, "suggests", 2, "summons", 2, "supports", 2, "surveys", 2, "surveyed", 2, "suspects", 2, "sways", 1, "swears", 1, "swore", 1, "sweats", 1, "sweated", 2, "swims", 2, "swam", 1, "talks", 1, "talked", 1, "takes", 1, "took", 1, "taps", 1, "tapped", 1, "tastes", 1, "tasted", 2, "taunts", 1, "tears", 2, "tore", 1, "teases", 2, "tells", 1, "told", 1, "tempts", 1, "terrifies", 3, "ties", 1, "thrashes", 2, "thrashed", 1, "threatens", 2, "throws", 1, "thrown", 1, "tickles", 2, "tightens", 2, "tortures", 2, "tosses", 2, "touches", 2, "trails", 1, "trailed", 1, "transports", 2, "travels", 2, "travelled", 2, "trembles", 2, "trembled", 2, "trips", 1, "tripped", 1, "trots", 1, "trotted", 2, "turns", 1, "turned", 1, "understands", 3, "updates", 2, "uproots", 2, "uses", 2, "used", 1, "using", 2, "venerates", 3, "views", 1, "vows", 1, "vowed", 1, "wails", 1, "wailed", 1, "waits", 1, "waited", 2, "walks", 1, "walked", 1, "wanders", 2, "wandered", 2, "warns", 1, "warned", 2, "washes", 2, "watches", 2, "waves", 1, "wavers", 2, "wavered", 2, "wears", 1, "weaves", 1, "wove", 1, "weeps", 1, "wept", 1, "welcomes", 2, "welcomed", 2, "whines", 1, "whined", 1, "whispers", 2, "wins", 1, "won", 1, "winces", 2, "winces", 2, "winks", 1, "winked", 1, "wipes", 1, "withdraws", 2, "withdrew", 2, "works", 1, "worked", 1, "worships", 2, "writhes", 1, "writhed", 1, "yawns", 1, "yawned", 1];
     var verbadj = ["abandoning", 4, "abandoned", 3, "aborting", 3, "aborted", 3, "abusing", 3, "abused", 2, "accepting", 3, "accepted", 3, "accompanying", 4, "accusing", 3, "accused", 2, "admiring", 3, "admired", 2, "admitting", 3, "admitted", 3, "admonishing", 4, "admonished", 3, "aging", 2, "aged", 1, "agreed", 2, "agreeing", 3, "allowing", 3, "allowed", 2, "announcing", 3, "announced", 2, "annoying", 3, "annoyed", 2, "asking", 2, "assisting", 3, "assisted", 3, "assuring", 3, "assured", 2, "attacking", 3, "attacked", 2, "awakening", 4, "awoken", 3, "balancing", 3, "balanced", 2, "banning", 2, "banned", 1, "beating", 2, "beaten", 2, "becoming", 3, "beckoning", 3, "begging", 2, "berating", 2, "biting", 2, "bitten", 2, "blaming", 2, "blooming", 2, "bloomed", 1, "blowing", 2, "blown", 1, "blushing", 2, "boiling", 2, "boring", 2, "bored", 1, "borrowing", 3, "borrowed", 2, "breaking", 2, "broken", 2, "brewing", 2, "brushing", 2, "burning", 2, "burnt", 1, "buried", 2, "bought", 1, "bringing", 2, "buying", 2, "calling", 2, "cancelling", 3, "cancelled", 2, "caressing", 3, "carrying", 3, "carving", 2, "carved", 1, "castigating", 4, "castigated", 4, "catching", 2, "censuring", 3, "censured", 2, "changing", 2, "changed", 1, "chanting", 2, "charming", 2, "charmed", 1, "chasing", 2, "chastising", 3, "chastised", 2, "cheating", 2, "cheated", 2, "chewing", 2, "chewed", 1, "clapping", 2, "cleaning", 2, "cleaned", 1, "climbing", 2, "clinging", 2, "collapsing", 3, "collapsed", 2, "coming", 2, "comforting", 3, "comforted", 3, "commanding", 3, "commending", 3, "commended", 3, "complimenting", 4, "concurring", 3, "considering", 4, "considered", 3, "constructing", 3, "constructed", 3, "consuming", 3, "consumed", 2, "contacting", 3, "continuing", 4, "continued", 3, "contracting", 3, "contracted", 3, "cooking", 2, "cooked", 1, "correcting", 3, "corrected", 3, "covering", 3, "covered", 2, "cracking", 2, "cracked", 1, "craving", 2, "craven", 2, "crawling", 2, "creasing", 2, "creased", 1, "cremating", 3, "cremated", 3, "crippling", 2, "crippled", 2, "croaking", 2, "crushing", 2, "crushed", 1, "crying", 2, "cursing", 2, "accursed", 3, "cutting", 2, "cut", 1, "damaging", 3, "damaged", 2, "dancing", 2, "daring", 2, "dazzling", 2, "dazzled", 2, "deafening", 3, "deafened", 2, "declining", 3, "decreasing", 3, "denying", 3, "denied", 2, "deriding", 3, "derided", 3, "desiring", 3, "desired", 3, "destroying", "destroyed", "detaching", 3, "detached", 2, "detecting", 3, "detected", 3, "dying", 2, "digging", 2, "disabling", 3, "disabled", 3, "disagreeing", 4, "disbelieving", 4, "disbelieved", 3, "dismissing", 3, "dismissed", 2, "disregarding", 4, "dissolving", 3, "dissolved", 2, "dissenting", 3, "disturbing", 3, "disturbed", 2, "distorting", 3, "distorted", 3, "doting", 2, "dozing", 2, "drained", 1, "drawing", 2, "drawn", 1, "dreaming", 2, "drenching", 2, "drenched", 1, "drinking", 2, "dropping", 2, "dropped", 1, "embracing", 3, "emerging", 2, "emerged", 2, "eating", 2, "enchanting", 3, "enchanted", 3, "encouraging", 4, "encouraged", 3, "enlightening", 4, "enlightened", 3, "erasing", 3, "entering", 3, "etching", 2, "examining", 4, "executing", 4, "executed", 4, "expanding", 3, "expanded", 3, "exploding", 3, "exploded", 3, "extinguishing", 4, "extinguished", 3, "fading", 2, "faded", 2, "falling", 2, "fallen", 2, "favouring", 3, "favoured", 2, "feeding", 2, "fed", 1, "feeling", 2, "felt", 1, "fetching", 2, "fighting", 2, "fitting", 2, "finding", 2, "found", 1, "flaking", 2, "flickering", 3, "flinching", 2, "flirting", 2, "flooding", 2, "flourishing", 3, "flying", 2, "flown", 1, "following", 3, "forbidding", 3, "forbidden", 3, "forging", 2, "forged", 1, "forgiving", 3, "forgiven", 3, "frowning", 2, "fuming", 2, "fussing", 2, "gaping", 2, "gathering", 3, "gathered", 2, "gazing", 2, "glancing", 2, "glaring", 2, "gleaming", 2, "glimpsing", 2, "gloating", 2, "glowing", 2, "going", 2, "gone", 1, "grasping", 2, "grimacing", 3, "groping", 2, "growing", 2, "grown", 1, "grumbling", 2, "hanging", 2, "hung", 1, "healing", 2, "healed", 2, "hearing", 2, "heeding", 2, "helping", 2, "hiding", 2, "hidden", 2, "hitting", 2, "holding", 2, "hurrying", 3, "hurried", 2, "identifying", 5, "identified", 4, "igniting", 3, "ignoring", 3, "ignored", 2, "imitating", 4, "imitated", 4, "increasing", 3, "inserting", 3, "insisting", 3, "insistent", 3, "inspecting", 3, "inspected", 3, "insulting", 3, "insulted", 3, "identifying", 5, "identified", 4, "interesting", 4, "interested", 4, "interrupting", 4, "interrupted", 4, "inventing", 3, "inverting", 3, "irritating", 4, "jeering", 2, "juggling", 2, "jumping", 2, "keeping", 2, "kept", 1, "killing", 2, "kneeling", 2, "lamenting", 3, "lamented", 3, "laughing", 2, "leaning", 2, "learning", 2, "leaving", 2, "licking", 2, "lifting", 2, "lining", 2, "listening", 2, "loathing", 2, "loathed", 1, "loaning", 2, "loaned", 1, "locating", 3, "located", 3, "looking", 2, "losing", 2, "lost", 1, "lowering", 3, "marching", 1, "marking", 2, "marked", 1, "measuring", 3, "measured", 2, "meditating", 4, "melting", 2, "melted", 2, "mocking", 2, "mocked", 1, "mourning", 2, "mourned", 1, "moving", 2, "moved", 1, "nagging", 2, "occupying", 4, "occupied", 3, "offending", 3, "offended", 3, "ordering", 3, "ordered", 2, "panicking", 3, "panicked", 2, "parting", 2, "parted", 2, "patronising", 4, "pausing", 2, "paused", 1, "pecking", 2, "peeking", 2, "peering", 2, "permitting", 3, "permitted", 3, "perspiring", 3, "picking", 2, "pinching", 2, "playing", 2, "pointed", 2, "pleasing", 2, "pleased", 2, "pointing", 2, "poking", 2, "pondering", 3, "posing", 2, "posed", 1, "pouncing", 2, "pouring", 2, "praising", 2, "praised", 1, "praying", 2, "pressing", 2, "pretending", 3, "pretended", 3, "proclaiming", 3, "proclaimed", 2, "prodding", 2, "prodded", 2, "profiting", 3, "protecting", 3, "protected", 3, "pulling", 2, "punching", 2, "punched", 1, "pursuing", 3, "pursued", 2, "pushing", 2, "putting away", 4, "quitting", 2, "quoting", 2, "quoted", 2, "raising", 2, "rattling", 2, "reading", 1, "reassuring", 4, "reassured", 3, "rebuking", 3, "rebuked", 2, "recalling", 3, "recalled", 2, "recanting", 3, "recognising", 4, "recognised", 3, "recoiling", 3, "recommending", 4, "recommended", 4, "recovering", 4, "recovered", 3, "refreshing", 3, "refreshed", 2, "refusing", 3, "refused", 2, "rejecting", 3, "rejected", 3, "relaxing", 3, "relaxed", 2, "remembering", 4, "remembered", 3, "reminding", 3, "reminded", 2, "removing", 3, "renouncing", 3, "repairing", 3, "repaired", 2, "replacing", 3, "replaced", 2, "replying", 3, "reporting", 3, "reported", 3, "reprimanding", 4, "reprimanded", 4, "reproaching", 3, "reproached", 2, "rescuing", 3, "rescued", 2, "reserving", 3, "reserved", 2, "resigning", 3, "resigned", 2, "resting", 2, "rested", 2, "retaliating", 5, "retching", 2, "retreating", 3, "returning", 3, "revering", 3, "revered", 2, "revolting", 3, "revolted", 3, "rising", 2, "risen", 2, "rolling", 2, "rubbing", 2, "running", 2, "rushing", 2, "rushed", 1, "sacrificing", 4, "sacrificed", 3, "sagging", 2, "saving", 2, "saved", 1, "scolding", 2, "scoring", 2, "screaming", 2, "searching", 2, "seeing", 2, "seen", 1, "seething", 2, "selling", 2, "sold", 1, "senses", 2, "setting", 1, "set", 1, "shaking", 2, "shaken", 2, "sharing", 2, "shared", 1, "sheltering", 3, "sheltered", 2, "shining", 2, "shuddering", 2, "shuffling", 2, "shunning", 2, "shunned", 1, "shutting", 2, "shut", 1, "sipping", 2, "sitting", 2, "seated", 2, "slapping", 2, "slapped", 2, "slicing", 2, "sliced", 1, "sliding", 2, "slipping", 2, "slips", 1, "smelling", 2, "snapping", 2, "snapped", 1, "snarling", 2, "sneering", 2, "sniffing", 2, "snoozing", 2, "snoring", 2, "snubbing", 2, "snubbed", 1, "soaking", 2, "soaked", 1, "sobbing", 2, "soothing", 2, "soothed", 1, "speaking", 2, "spoken", 2, "spinning", 2, "spun", 1, "spitting", 2, "splashing", 2, "splashed", 1, "squeezing", 2, "squeezed", 1, "stabbing", 2, "stabbed", 1, "staggering", 3, "staggered", 2, "staining", 2, "stained", 1, "stamping", 2, "staring", 2, "starting", 2, "starving", 2, "starved", 1, "stealing", 2, "stolen", 2, "stimulating", 4, "stimulated", 4, "stirring", 2, "stirred", 1, "stopping", 2, "stopped", 1, "stretching", 2, "stretched", 1, "striking", 2, "struck", 1, "stripping", 2, "stripped", 1, "stroking", 2, "stroked", 1, "studying", 3, "studied", 2, "stumbling", 2, "subduing", 3, "subdued", 2, "submitting", 3, "suffering", 3, "suggesting", 3, "suggested", 3, "summoning", 3, "summoned", 2, "supporting", 3, "supported", 3, "surveying", 3, "suspecting", 3, "suspected", 3, "swaying", 2, "swayed", 1, "swearing", 2, "sworn", 1, "sweating", 2, "swimming", 2, "taking", 2, "taken", 2, "talking", 2, "tapping", 2, "tasting", 2, "taunting", 2, "taunted", 2, "tearing", 2, "torn", 1, "teasing", 2, "teased", 1, "telling", 2, "tempting", 2, "tempted", 2, "terrifying", 4, "terrified", 3, "thrashing", 2, "threatening", 3, "threatened", 2, "throwing", 2, "tickling", 2, "tickled", 2, "tying", 2, "tied", 1, "tightening", 3, "tightened", 2, "torturing", 3, "tortured", 2, "tossing", 2, "tossed", 1, "touching", 2, "touched", 1, "trailing", 2, "transporting", 3, "transported", 3, "travelling", 3, "trembling", 2, "tripping", 2, "trotting", 2, "turning", 2, "turned", 1, "understanding", 4, "understood", 3, "updating", 3, "updated", 3, "uprooting", 3, "uprooted", 3, "venerating", 4, "venerated", 4, "viewing", 2, "viewed", 1, "vowing", 2, "wailing", 2, "waiting", 2, "walking", 2, "wandering", 3, "warning", 2, "washing", 2, "washed", 1, "watching", 2, "watched", 1, "waving", 2, "waved", 1, "wavering", 3, "wearing", 2, "worn", 1, "weaving", 2, "woven", 2, "weeping", 2, "welcoming", 3, "whining", 2, "whispering", 3, "whispered", 2, "winning", 2, "wincing", 2, "winking", 2, "wiping", 2, "withdrawing", 3, "withdrawn", 2, "wiped", 2, "working", 2, "worshipping", 2, "worshipped", 2, "writhing", 2, "yawning", 2];
     var prep = ["about", 2, "above", 2, "across", 2, "after", 2, "at", 1, "before", 2, "behind", 2, "below", 2, "beside", 2, "between", 2, "beyond", 2, "by", 1, "for", 1, "from", 1, "in", 1, "inside", 2, "of", 1, "on", 1, "onto", 2, "outside", 2, "over", 2, "past", 1, "through", 1, "under", 2, "with", 1, "without", 2];
@@ -36,33 +40,36 @@
     var conj = ["although", 2, "always", 2, "as", 1, "and", 1, "because", 2, "but", 1, "farewell,", 2, "forever", 3, "goodbye,", 2, "hello,", 2, "how", 1, "instead,", 2, "later,", 2, "never", 2, "no,", 1, "not", 1, "or", 1, "rather,", 2, "so", 1, "somehow", 2, "then", 1, "though", 1, "together,", 3, "unless", 2, "until", 2, "what", 1, "when", 1, "where", 1, "yes,", 1, "yet", 1];
 
 
-    // functions...
-    function rnd(n) {
+    /*** Functions ***
+     *
+     * TODO: Doco
+     */
+    var rnd = function (n) {
         return Math.floor(Math.random() * n);
     }
 
 
-    function div(x, y) {
+    var div = function (x, y) {
         return Math.floor(x / y);
     }
 
 
-    function word(arr) {
+    var word = function (arr) {
         return rnd(arr.length / 2);
     }
 
 
-    function syl(arr, wd) {
+    var syl = function (arr, wd) {
         return arr[2 * wd + 1];
     }
 
 
-    function text(arr) {
+    var text = function (arr) {
         return arr[2 * w];
     }
 
 
-    function select(arr, l) {
+    var select = function (arr, l) {
         while ((w = word(arr)) != -1) {
             if ((s = syl(arr, w)) <= l) {
                 var b = true;
@@ -87,7 +94,7 @@
     }
 
 
-    function vp(l, va) {
+    var vp = function (l, va) {
         var t;
         var c = "";
         var arr = va || rnd(3) == 0 ? verbadj : verb;
@@ -107,14 +114,14 @@
     }
 
 
-    function pp(l) {
+    var pp = function (l) {
         vpl = false;
         select(prep, l - 1);
         return text(prep) + " " + np(l - s);
     }
 
 
-    function np(l) {
+    var np = function (l) {
         var t;
         var arr = rnd(3) == 0 ? nounadj : rnd(4) == 0 && std ? season : noun;
         var u = false;
@@ -157,7 +164,7 @@
     }
 
 
-    function line(l, ssn) {
+    var line = function (l, ssn) {
         vatd = true;
         if (ssn && srq) {
             vpl = false;
@@ -176,47 +183,29 @@
         return t;
     }
 
-
-    function day(d) {
-        return d + (d == 1 || d == 21 || d == 31 ? d + "st" : d == 2 || d == 22 ? "nd " : d == 3 || d == 23 ? "rd" : "th");
+    var ucfirst = function (str) {
+        return str.charAt(0).toUpperCase() + str.substr(1);
     }
 
-
-    function mon(m) {
-        var mth = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        return mth[m];
-    }
-
-
-    function yr(y) {
-        return y > 1900 ? y : 1900 + y;
-    }
-
-
-    function z(h) {
-        return h == 0 ? "00" : h < 10 ? "0" + h : h;
-    }
-
-
-    function haiku(l1, l2, l3, s) {
+    var haiku = function (l1, l2, l3, s) {
         var now = new Date;
         var h1, h2, h3;
         uidx = 0;
         std = true;
         vpl = false;
-        return (h1 = line(l1, false)) + "\n" 
-            + (h2 = line(l2, false)) + "\n" + 
-            (h3 = line(l3, s));
+        return (h1 = ucfirst(line(l1, false))) + "\n" 
+            + (h2 = ucfirst(line(l2, false))) + "\n" + 
+            (h3 = ucfirst(line(l3, s)));
     }
 
 
-    function trad() {
+    var trad = function () {
         ptd = false;
         return haiku(5, 7, 5, srq = true);
     }
 
 
-    function modern() {
+    var modern = function () {
         ptd = true;
         return haiku(2 + rnd(4), 2 + rnd(4) + rnd(3), 2 + rnd(4), srq = false);
     }
