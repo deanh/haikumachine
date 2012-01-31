@@ -19,7 +19,7 @@ Alternatively, you can just point your client at
 http://haikumachine.herokuapp.com/
 
 ## License
-<code>
+<pre><code>
   Original code from: http://www.youhaventlived.com/haikumatic/haikum.htm
   Copyright (C) 2002, Richard A. Bartle <richard@mud.co.uk>
 
@@ -38,4 +38,4 @@ http://haikumachine.herokuapp.com/
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-</code>
+</code></pre>
