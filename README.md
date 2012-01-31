@@ -19,12 +19,12 @@ Alternatively, you can just point your client at
 http://haikumachine.herokuapp.com/
 
 ## License
-
+<pre><code>
   Original code from: http://www.youhaventlived.com/haikumatic/haikum.htm
-  Copyright (C) 2002, Richard A. Bartle <richard@mud.co.uk>
+  Copyright (C) 2002, Richard A. Bartle, richard@mud.co.uk
 
   Modernized version
-  Copyright (C) 2012, H. Dean Hudson <dean@ero.com>
+  Copyright (C) 2012, H. Dean Hudson, dean@ero.com
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -37,4 +37,5 @@ http://haikumachine.herokuapp.com/
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  along with this program.  If not, see http://www.gnu.org/licenses/.
+</code></pre>
